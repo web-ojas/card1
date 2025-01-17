@@ -22,59 +22,19 @@ const ServiceCard = ({ icon: Icon, title, description }) => (
   </div>
 );
 
-const Carousel = ({ children }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const items = React.Children.toArray(children);
-  const itemsPerView = { md: 2, lg: 3 };
-
-  const next = () => {
-    setCurrentIndex((current) =>
-      current + 1 >= items.length ? 0 : current + 1
-    );
-  };
-
-  const previous = () => {
-    setCurrentIndex((current) =>
-      current - 1 < 0 ? items.length - 1 : current - 1
-    );
-  };
-
-  return (
-    <div className="relative animate-fade-slide-up">
-      <div className="overflow-hidden">
-        <div
-          className="flex transition-transform duration-300 ease-in-out"
-          style={{
-            transform: `translateX(-${
-              currentIndex * (100 / itemsPerView.lg)
-            }%)`,
-          }}
-        >
-          {items}
-        </div>
-      </div>
-      <button
-        onClick={previous}
-        className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
-      >
-        ←
-      </button>
-      <button
-        onClick={next}
-        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
-      >
-        →
-      </button>
+const ScrollableContainer = ({ children }) => (
+  <div className="relative animate-fade-slide-up">
+    <div className="overflow-x-auto">
+      <div className="flex gap-4 pb-4">{children}</div>
     </div>
-  );
-};
-
-const CarouselItem = ({ children }) => (
-  <div className="flex-none w-full md:w-1/2 lg:w-1/3 p-1">
-    <div className="bg-white rounded-lg shadow p-6">{children}</div>
   </div>
 );
 
+const CarouselItem = ({ children }) => (
+  <div className="flex-none w-full md:w-1/2 lg:w-1/3 min-w-[300px]">
+    <div className="bg-white rounded-lg shadow p-6">{children}</div>
+  </div>
+);
 const ContactPopup = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
@@ -277,9 +237,9 @@ const DigitalCard = () => {
           </p>
         </div>
 
-        {/* First Carousel */}
+        {/* First Scrollable Section */}
         <div className="mb-12">
-          <Carousel>
+          <ScrollableContainer>
             {["a.png", "b.png", "c.png"].map((img, index) => (
               <CarouselItem key={index}>
                 <img
@@ -289,7 +249,7 @@ const DigitalCard = () => {
                 />
               </CarouselItem>
             ))}
-          </Carousel>
+          </ScrollableContainer>
         </div>
 
         {/* Services Grid */}
@@ -301,8 +261,8 @@ const DigitalCard = () => {
           ))}
         </div>
 
-        {/* Second Carousel */}
-        <Carousel>
+        {/* Second Scrollable Section */}
+        <ScrollableContainer>
           {[1, 2, 3, 4, 5].map((num) => (
             <CarouselItem key={num}>
               <img
@@ -312,7 +272,7 @@ const DigitalCard = () => {
               />
             </CarouselItem>
           ))}
-        </Carousel>
+        </ScrollableContainer>
 
         {/* Contact Section */}
         <ContactSection />
